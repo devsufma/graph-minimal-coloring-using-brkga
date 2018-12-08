@@ -25,7 +25,7 @@ class Population:
 		elite = []
 		tempElite1 = self.getColoring(0)
 		aux = 0
-		for i in range(1, len(self.tamPopulacao)):
+		for i in range(1, self.tamPopulacao):
 			if tempElite1.getFitness() <= self.getColoring(i).getFitness():
 				tempElite1 = self.getColoring(i)
 				aux = i
@@ -33,11 +33,7 @@ class Population:
 		elite.append(tempElite1)
 		taxa = int(taxaSobrevivencia*(self.tamPopulacao-1))
 		for i in range(taxa):
-			p = randint(0, self.tamPopulacao)
+			p = randint(0, (self.tamPopulacao-1))
 			if p != aux:
 				elite.append(self.getColoring(p))
 		return elite
-
-edges = [[0,1,1],[1,0,1],[1,1,0]]
-x = Population(3,True, 3, 3, edges)
-print(type(x))
