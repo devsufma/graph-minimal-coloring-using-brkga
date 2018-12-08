@@ -3,7 +3,7 @@ import populacao as pp
 class BRKGA:
     taxaCruzamento = 0.8
     taxaMutacao = 0.2
-    taxaSobrevivencia = 0.2
+    taxaSobrevivencia = 0.4
     ELITISM = True
     elite = []
     n_VERT = 0
