@@ -2,8 +2,8 @@ import numpy as np
 
 class Graph:
     def __init__(self, numVert):
-        self.numVertices = numVert
-        self.numColors = numVert
+        self.numVert = numVert
+        self.numColor = numVert
         self.edges = [[0 for x in range(numVert)] for y in range(numVert)]
         self.colors = []
 
@@ -17,7 +17,7 @@ class Graph:
         return self.edges
 
     def getNumColors(self):
-        return self.numColors
+        return self.numColor
 
     def getColors(self):
         return self.colors
