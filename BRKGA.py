@@ -1,23 +1,52 @@
-import BRKGA
-import graph as gr
-import individuo as ind
+from random import randint
 import populacao as pp
-import time
+class BRKGA:
+    taxaCruzamento = 0.8
+    taxaMutacao = 0.2
+    taxaSobrevivencia = 0.2
+    ELITISM = True
+    elite = []
+    n_VERT = 0
 
-if __name__ == "__main__":
+    def Evoluir(self, Populacao, tamPopulacao, numVert, numColor, edges):
+        n_VERT = numVert
+        n_COLOR = numColor
+        novaPopulacao = pp.Population(tamPopulacao, True, numVert, numColor, edges)
+        sobrevive = 0
+        if (self.ELITISM):
+            elite = novaPopulacao.getEliteFromFitness(self.taxaSobrevivencia)
 
-    tempoLimite = 0.5 #tempo em minutos
-    tempo = time.time()
-    grafo = gr.Graph(5)
-    Populacao = pp.Population(10, True, grafo.numVert, grafo.numColor, grafo.edges)
-    TAXA = BRKGA.BRKGA()
-    print()
-    geracoes = 0
-    while (int(time.time()- tempo)/60) < tempoLimite:
-        Populacao = TAXA.Evoluir(Populacao, Populacao.tamPopulacao, grafo.numVert, grafo.numColor, grafo.edges)
-        geracoes += 1
+            for i in range(len(elite)):
+                novaPopulacao.coloring[i] = elite[i]
+                sobrevive += 1
 
-    elite = Populacao.getEliteFromFitness(TAXA.taxaSobrevivencia)
-    coresUsadas  = elite[0].colors
-    print("Total de cores usadas => ", coresUsadas)
-    print("Total de gerações -> ", geracoes)
+        for i in range(sobrevive, len(Populacao.coloring)):
+            taxa = int(100*self.taxaCruzamento)
+            if randint(0, 100) < taxa:
+                positPai = randint(0, (len(elite)-1))
+                ind1 = elite[positPai]
+                ind2 = Populacao.getColoring(i)
+                filho = self.crossover(ind1, ind2)
+
+                novaPopulacao.saveColoring(filho)
+
+        for i in range(sobrevive, novaPopulacao.tamPopulacao):
+            taxa = int(100*self.taxaMutacao)
+            if randint(0, 100) < taxa:
+                self.mutacao(novaPopulacao.getColoring(i), n_COLOR)
+
+        return novaPopulacao
+
+    def mutacao(self, ind, n_COLOR):
+        for i in range(len(ind.chromosome)):
+            taxa = int(100*self.taxaMutacao)
+            if randint(0, 100) < taxa:
+                color = randint(0, n_COLOR-1)
+                ind.setColorChromosome(i, color)
+
+    def crossover(self, ind1, ind2):
+        filho = ind1
+        for i in range(len(ind1.chromosome)):
+            if i%2 == 0:
+                filho.setColorChromosome(i, ind2.chromosome[i])
+        return filho
