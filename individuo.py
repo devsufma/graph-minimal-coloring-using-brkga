@@ -40,11 +40,11 @@ class Individuo:
             if flag:
                 tempColors.append(self.getColorChromosome(i))
         self.colors = len(tempColors)
-        return colors
+        return self.colors
 
     def getFitness(self):
         if self.fitness == 0:
-            self.fitness = getColors()
+            self.fitness = self.getColors()
         return self.fitness
 
     def correctGenome(self, edges):
