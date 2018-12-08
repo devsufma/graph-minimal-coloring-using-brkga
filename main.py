@@ -24,13 +24,12 @@ if __name__ == "__main__":
                 tam = int(line1[2])
                 first = 1
                 grafo = gr.Graph(tam)
-                #print("N de vertices: ", tam)
+
             else:
                 lineE = line.split(" ")
                 v1 = int(lineE[1]) - 1
                 v2 = int(lineE[2]) - 1
                 grafo.addEdge(v1, v2)
-                #print("Vertice 1: " + v1 + " Vertice 2: " + v2
                 
         Populacao = pp.Population(10, True, grafo.numVert, grafo.numColor, grafo.edges)
         TAXA = BRKGA.BRKGA()
