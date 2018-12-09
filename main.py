@@ -7,39 +7,40 @@ import glob
 
 if __name__ == "__main__":
 
-    path = "C:/Documents"
+    listFile = ["../kgb/*.clq", "../kgb/*.txt"]
 
-    for file in glob.glob(path + '/*.txt'):
+    for ext in listFile:
+        for file in glob.glob(ext):
 
-        fileg = open(file, 'r')
-        first = 0
+            fileg = open(file, 'r')
+            first = 0
 
-        tempoLimite = 0.5 #tempo em minutos
-        tempo = time.time()
+            tempoLimite = 0.5 #tempo em minutos
+            tempo = time.time()
 
-        for line in fileg:
+            for line in fileg:
 
-            if first == 0:
-                line1 = line.split(" ")
-                tam = int(line1[2])
-                first = 1
-                grafo = gr.Graph(tam)
+                if first == 0:
+                    line1 = line.split(" ")
+                    tam = int(line1[2])
+                    first = 1
+                    grafo = gr.Graph(tam)
 
-            else:
-                lineE = line.split(" ")
-                v1 = int(lineE[1]) - 1
-                v2 = int(lineE[2]) - 1
-                grafo.addEdge(v1, v2)
-                
-        Populacao = pp.Population(10, True, grafo.numVert, grafo.numColor, grafo.edges)
-        TAXA = BRKGA.BRKGA()
-        print()
-        geracoes = 0
-        while (int(time.time()- tempo)/60) < tempoLimite:
-            Populacao = TAXA.Evoluir(Populacao, Populacao.tamPopulacao, grafo.numVert, grafo.numColor, grafo.edges)
-            geracoes += 1
+                else:
+                    lineE = line.split(" ")
+                    v1 = int(lineE[1]) - 1
+                    v2 = int(lineE[2]) - 1
+                    grafo.addEdge(v1, v2)
 
-        elite = Populacao.getEliteFromFitness(TAXA.taxaSobrevivencia)
-        coresUsadas  = elite[0].colors
-        print("Total de cores usadas => ", coresUsadas)
-        print("Total de gerações -> ", geracoes)
+            Populacao = pp.Population(10, True, grafo.numVert, grafo.numColor, grafo.edges)
+            TAXA = BRKGA.BRKGA()
+            print()
+            geracoes = 0
+            while (int(time.time()- tempo)/60) < tempoLimite:
+                Populacao = TAXA.Evoluir(Populacao, Populacao.tamPopulacao, grafo.numVert, grafo.numColor, grafo.edges)
+                geracoes += 1
+
+            elite = Populacao.getEliteFromFitness(TAXA.taxaSobrevivencia)
+            coresUsadas  = elite[0].colors
+            print("Total de cores usadas => ", coresUsadas)
+            print("Total de gerações -> ", geracoes)
